@@ -1,10 +1,13 @@
 package org.example.springfromscratch.config;
 
+import jakarta.servlet.FilterRegistration;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRegistration;
+import org.example.springfromscratch.filter.EncodingFilter;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
 public class WebAppInitializer implements WebApplicationInitializer {
@@ -17,5 +20,9 @@ public class WebAppInitializer implements WebApplicationInitializer {
         ServletRegistration.Dynamic registration = servletContext.addServlet("dispatcherServlet", dispatcherServlet);
         registration.setLoadOnStartup(1);
         registration.addMapping("/");
+
+        FilterRegistration.Dynamic encodingFilter;
+        encodingFilter = servletContext.addFilter("encodingFilter", new EncodingFilter());
+        encodingFilter.addMappingForUrlPatterns(null, true, "/*");
     }
 }
